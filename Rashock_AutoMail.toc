@@ -2,6 +2,7 @@
 ## Title: |cffffcc00Rashock|cffffffff - AutoMail
 ## Notes: Mailbox Regeln: Verschickt items an vordefinierte Ziele über einen Versandknopf.
 ## Author: Rashock 
-## Version: 0.0.4
+## Version: 0.0.5
+
 
 Rashock_AutoMail.lua
