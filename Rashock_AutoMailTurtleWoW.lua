@@ -1,13 +1,13 @@
 -- Rashock_AutoMailTurtleWoW: Auto-send by rules (live scan, 1 attachment/mail)
 -- Lua 5.0 safe + skip current typed recipient + skip self (player)
 
-local ADDON_NAME = "Rashock_AutoMailTurtleWoW"
+local ADDON_NAME = "Rashock_AutoMail"
 local PREFIX = "RAM"
 local ATTACHMENTS_MAX = 1
 local SEND_DELAY = 0.6
 local RAM_DEBUG = false
 
--- ===== Regeln: ItemID -> Empf‰nger (subject optional; sonst dynamisch "RAM: <ItemName>") =====
+-- ===== Regeln: ItemID -> Empf√§nger (subject optional; sonst dynamisch "RAM: <ItemName>") =====
 local RAM_RULES = {
 
 -- Stoffe:
@@ -61,28 +61,28 @@ local RAM_RULES = {
     
    
 -- Kochzeugs
-  [12205] = {recipient="ITKoch"},      -- Weiﬂes Spinenfleisch
+  [12205] = {recipient="ITKoch"},      -- Wei√ües Spinenfleisch
   [3685] = {recipient="ITKoch"},      -- Rapoter Eier
   [12203] = {recipient="ITKoch"},      -- Red Wolf Meat
   
 -- ZG
-  [19699] = {recipient="ITZG"},      --   Schmuck & M¸nzen
-  [19700] = {recipient="ITZG"},      --    Schmuck & M¸nzen
-  [19701] = {recipient="ITZG"},      --   Schmuck & M¸nzen
-  [19702] = {recipient="ITZG"},      --  Schmuck & M¸nzen
-  [19703] = {recipient="ITZG"},      --    Schmuck & M¸nzen
-  [19704] = {recipient="ITZG"},      --  Schmuck & M¸nzen
-  [19705] = {recipient="ITZG"},      --  Schmuck & M¸nzen
-  [19706] = {recipient="ITZG"},      --  Schmuck & M¸nzen
-  [19707] = {recipient="ITZG"},      --  Schmuck & M¸nzen
-  [19708] = {recipient="ITZG"},      --  Schmuck & M¸nzen
-  [19709] = {recipient="ITZG"},      --   Schmuck & M¸nzen 
-  [19710] = {recipient="ITZG"},      --   Schmuck & M¸nzen
-  [19711] = {recipient="ITZG"},      --   Schmuck & M¸nzen
-  [19712] = {recipient="ITZG"},      --   Schmuck & M¸nzen
-  [19713] = {recipient="ITZG"},      --   Schmuck & M¸nzen
-  [19714] = {recipient="ITZG"},      --   Schmuck & M¸nzen
-  [19715] = {recipient="ITZG"},      --   Schmuck & M¸nzen
+  [19699] = {recipient="ITZG"},      --   Schmuck & M√ºnzen
+  [19700] = {recipient="ITZG"},      --    Schmuck & M√ºnzen
+  [19701] = {recipient="ITZG"},      --   Schmuck & M√ºnzen
+  [19702] = {recipient="ITZG"},      --  Schmuck & M√ºnzen
+  [19703] = {recipient="ITZG"},      --    Schmuck & M√ºnzen
+  [19704] = {recipient="ITZG"},      --  Schmuck & M√ºnzen
+  [19705] = {recipient="ITZG"},      --  Schmuck & M√ºnzen
+  [19706] = {recipient="ITZG"},      --  Schmuck & M√ºnzen
+  [19707] = {recipient="ITZG"},      --  Schmuck & M√ºnzen
+  [19708] = {recipient="ITZG"},      --  Schmuck & M√ºnzen
+  [19709] = {recipient="ITZG"},      --   Schmuck & M√ºnzen 
+  [19710] = {recipient="ITZG"},      --   Schmuck & M√ºnzen
+  [19711] = {recipient="ITZG"},      --   Schmuck & M√ºnzen
+  [19712] = {recipient="ITZG"},      --   Schmuck & M√ºnzen
+  [19713] = {recipient="ITZG"},      --   Schmuck & M√ºnzen
+  [19714] = {recipient="ITZG"},      --   Schmuck & M√ºnzen
+  [19715] = {recipient="ITZG"},      --   Schmuck & M√ºnzen
   
 -- AQ
   [22202] = {recipient="ITZG"},      --   Small Obsidian Shard
@@ -107,9 +107,9 @@ local RAM_RULES = {
 	
 
 -- VZ
-  [14344] = {recipient="ITVZ"},      --  Groﬂer Gl‰nzener Splitter
+  [14344] = {recipient="ITVZ"},      --  Gro√üer Gl√§nzener Splitter
 
--- Schlieﬂkassetten
+-- Schlie√ükassetten
   [4633] = {recipient="Rshock"},      -- Heavy Bronze Lockbox
   [4636] = {recipient="Rshock"},      -- Strong Iron Lockbox
  -- [4636] = {recipient="Rshock"},      -- Strong Iron Lockbox
@@ -173,7 +173,7 @@ local function RAM_sanitizeName(s)
   return string.lower(s)
 end
 
--- aktuell getippter Empf‰nger (f¸r Skip)
+-- aktuell getippter Empf√§nger (f√ºr Skip)
 local function RAM_GetCurrentTypedRecipientLower()
   if SendMailNameEditBox and SendMailNameEditBox.GetText then
     return RAM_sanitizeName(SendMailNameEditBox:GetText())
@@ -181,13 +181,13 @@ local function RAM_GetCurrentTypedRecipientLower()
   return nil
 end
 
--- eigener Charname (f¸r Skip Self)
+-- eigener Charname (f√ºr Skip Self)
 local function RAM_GetPlayerLower()
   local n = UnitName and UnitName("player") or nil
   return RAM_sanitizeName(n)
 end
 
--- Gibt es noch Items, die an NICHT ¸bersprungene Empf‰nger gehen?
+-- Gibt es noch Items, die an NICHT √ºbersprungene Empf√§nger gehen?
 local function RAM_AnyItemsLeft(skipLower, selfLower)
   for bag = 0, 4 do
     local n = GetContainerNumSlots(bag) or 0
@@ -208,7 +208,7 @@ local function RAM_AnyItemsLeft(skipLower, selfLower)
   return false
 end
 
--- N‰chsten Stack f¸r einen Empf‰nger finden (achtet auf Skip & Self)
+-- N√§chsten Stack f√ºr einen Empf√§nger finden (achtet auf Skip & Self)
 local function RAM_FindNextForRecipient(recipient, skipLower, selfLower)
   local recLower = RAM_sanitizeName(recipient)
   if selfLower and recLower == selfLower then
@@ -234,7 +234,7 @@ local function RAM_FindNextForRecipient(recipient, skipLower, selfLower)
   return nil
 end
 
--- Empf‰ngerliste aus Taschen (achtet auf Skip & Self)
+-- Empf√§ngerliste aus Taschen (achtet auf Skip & Self)
 local function RAM_BuildRecipientList(skipLower, selfLower)
   local set = {}
   local list = {}
@@ -249,7 +249,7 @@ local function RAM_BuildRecipientList(skipLower, selfLower)
           local rLower = RAM_sanitizeName(rule.recipient)
           if (not skipLower or rLower ~= skipLower) and (not selfLower or rLower ~= selfLower) and not set[rLower] then
             set[rLower] = true
-            table.insert(list, rule.recipient) -- Original-Schreibweise f¸r UI/Logs
+            table.insert(list, rule.recipient) -- Original-Schreibweise f√ºr UI/Logs
           end
         end
       end
@@ -290,8 +290,8 @@ local function RAM_StartSending()
   -- dynamische Skips festlegen
   local skipLower = RAM_GetCurrentTypedRecipientLower()
   local selfLower = RAM_GetPlayerLower()
-  if skipLower then RAM_Print("Skip aktiv f¸r Empf‰nger (getippt): "..(SendMailNameEditBox:GetText() or "?")) end
-  if selfLower then RAM_Print("Eigener Char wird immer ¸bersprungen: "..(UnitName("player") or "?")) end
+  if skipLower then RAM_Print("Skip aktiv f√ºr Empf√§nger (getippt): "..(SendMailNameEditBox:GetText() or "?")) end
+  if selfLower then RAM_Print("Eigener Char wird immer √ºbersprungen: "..(UnitName("player") or "?")) end
 
   local recipients = RAM_BuildRecipientList(skipLower, selfLower)
   if table.getn(recipients) == 0 then
@@ -317,7 +317,7 @@ local function RAM_StartSending()
 
     local current = sending.recipients[sending.idx]
     if current and sending.selfLower and RAM_sanitizeName(current) == sending.selfLower then
-      -- Notbremse: falscher Empf‰nger -> direkt zum n‰chsten
+      -- Notbremse: falscher Empf√§nger -> direkt zum n√§chsten
       if RAM_DEBUG then RAM_Print("Skip (self): "..current) end
       sending.idx = sending.idx + 1
       sending.lastT = now
@@ -360,8 +360,8 @@ local function RAM_StartSending()
 -- Safety: nur senden, wenn wirklich ein Item angeheftet ist
 local a1 = _G["SendMailAttachment1"]
 if not (a1 and a1.hasItem) then
-  -- kein Anhang? Dann brechen wir diese Iteration ab und versuchen im n‰chsten Tick erneut
-  RAM_Print("Kein Anhang erkannt ñ versuche erneut Ö")
+  -- kein Anhang? Dann brechen wir diese Iteration ab und versuchen im n√§chsten Tick erneut
+  RAM_Print("Kein Anhang erkannt ¬ñ versuche erneut ¬Ö")
   return
 end
 
@@ -371,7 +371,7 @@ SendMail(current, subject, "")
 
 
 
-      -- z‰hlen
+      -- z√§hlen
       sending.totals[current] = sending.totals[current] or {}
       sending.totals[current][itemID] = (sending.totals[current][itemID] or 0) + count
       sending.totalAll = sending.totalAll + count
@@ -383,7 +383,7 @@ SendMail(current, subject, "")
       sending.lastT = now
       return
     else
-      -- f¸r diesen Empf‰nger nichts mehr -> n‰chster
+      -- f√ºr diesen Empf√§nger nichts mehr -> n√§chster
       sending.idx = sending.idx + 1
       sending.lastT = now
       return
@@ -413,3 +413,4 @@ end
 local mailbox = CreateFrame("Frame")
 mailbox:RegisterEvent("MAIL_SHOW")
 mailbox:SetScript("OnEvent", RAM_CreateButton)
+
