@@ -34,7 +34,6 @@ Extract them into your WoW AddOns folder:
 
 World of Warcraft\Interface\AddOns\Rashock_AutoMail
 
-
 Restart your game client.
 
 Enable Rashock_AutoMail in the AddOn list on the character selection screen.
@@ -44,11 +43,24 @@ ________________________________________________________________________________
 
 Currently, the addon is still in testing:
 
-Items are automatically sent to the hardcoded bank characters.
+When you open a Mailbox and go to the Send Mail tab, you will see a new button: "RAM Send".
 
-No configuration menu yet.
+Clicking this button will:
 
-(Once development progresses, usage instructions will be updated here.)
+Scan your inventory for items that match your defined ruleset.
+
+Automatically send those items to the corresponding bank character.
+
+If you are currently logged in with one of your bank characters, the addon will skip sending items to that character automatically.
+
+After sending, you will receive a summary in your chat window showing which items were sent and to which bank character.
+
+_____________________________________________________________________________________________________________________
+⚠️ Compatibility
+_____________________________________________________________________________________________________________________
+
+Not compatible with the “Postal” addon – using both together will cause issues.
+
 _____________________________________________________________________________________________________________________
 📝 To-Do / Roadmap
 _____________________________________________________________________________________________________________________
