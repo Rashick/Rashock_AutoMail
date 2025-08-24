@@ -3,13 +3,16 @@ Rashock_AutoMail
 An addon for World of Warcraft 1.12 that automatically sends items to your bank characters based on customizable rules.
 Originally developed for Turtle-WoW.
 
-🚧 Status
+_____________________________________________________________________________________________________________________
+🚧 Status: ⚠️ Testing Phase
+_____________________________________________________________________________________________________________________
 
-⚠️ Testing Phase
 At the moment, items are only sent to hardcoded bank characters (currently mine).
 If you try it out, don’t worry if your items end up in my mailbox. 😉
 
+_____________________________________________________________________________________________________________________
 ✨ Features (planned & in development)
+_____________________________________________________________________________________________________________________
 
 Rule-based automatic mailing system
 
@@ -21,7 +24,9 @@ Compatible with Turtle-WoW
 
 Future: Configurable bank characters instead of hardcoded ones
 
+_____________________________________________________________________________________________________________________
 📦 Installation
+_____________________________________________________________________________________________________________________
 
 Download the addon files.
 
@@ -33,8 +38,9 @@ World of Warcraft\Interface\AddOns\Rashock_AutoMail
 Restart your game client.
 
 Enable Rashock_AutoMail in the AddOn list on the character selection screen.
-
+_____________________________________________________________________________________________________________________
 🎮 Usage
+_____________________________________________________________________________________________________________________
 
 Currently, the addon is still in testing:
 
@@ -43,8 +49,9 @@ Items are automatically sent to the hardcoded bank characters.
 No configuration menu yet.
 
 (Once development progresses, usage instructions will be updated here.)
-
+_____________________________________________________________________________________________________________________
 📝 To-Do / Roadmap
+_____________________________________________________________________________________________________________________
 
  Add configuration for custom bank characters
 
@@ -55,12 +62,14 @@ No configuration menu yet.
  Logging of sent mails
 
  General bugfixing and polish
-
+_____________________________________________________________________________________________________________________
 🤝 Contributing
+_____________________________________________________________________________________________________________________
 
 Feedback, suggestions, and bug reports are welcome!
 Feel free to open an issue or submit a pull request.
-
+_____________________________________________________________________________________________________________________
 📜 License
+_____________________________________________________________________________________________________________________
 
 This project is open-source. You are free to use, modify, and share it under the terms of the license file included in this repository.
