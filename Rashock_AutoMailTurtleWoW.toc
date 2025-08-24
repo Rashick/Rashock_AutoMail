@@ -1,7 +1,0 @@
-## Interface: 11200
-## Title: |cffffcc00Rashock|cffffffff - AutoMail
-## Notes: Mailbox Regeln: Verschickt items an vordefinierte Ziele über einen Versandknopf.
-## Author: Rashock & chatgpt
-## Version: 0.0.3
-
-Rashock_AutoMailTurtleWoW.lua
