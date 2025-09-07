@@ -1,7 +1,7 @@
 -- Rashock_AutoMailTurtleWoW: Auto-send by rules (live scan, 1 attachment/mail)
 -- Lua 5.0 safe + skip current typed recipient + skip self (player)
 
-local ADDON_NAME = "Rashock_AutoMail"
+local ADDON_NAME = "Rashock_AutoMailTurtleWoW"
 local PREFIX = "RAM"
 local ATTACHMENTS_MAX = 1
 local SEND_DELAY = 0.6
@@ -10,131 +10,350 @@ local RAM_DEBUG = false
 -- ===== Regeln: ItemID -> Empfänger (subject optional; sonst dynamisch "RAM: <ItemName>") =====
 local RAM_RULES = {
 
--- Stoffe:
-  [2589]  = {recipient="ITLeinen"}, -- Leinenstoff
-  [2592]  = {recipient="ITWoll"}, -- Wollstoff
-  [4306]  = {recipient="ITSeiden"}, -- Seidenstoff
-  [4338]  = {recipient="ITMagie"}, -- Magiestoff
-  [14047] = {recipient="ITRunen"}, -- Runenstoff
-  [14256] = {recipient="ITTeufels"}, -- Teufelsstoff
-  [14342] = {recipient="ITMond"},  -- Mondstoff
+
+-- Stoffe
+  [2589]  = {recipient="ITLeinen"},   -- Leinenstoff
+  [2996]  = {recipient="ITLeinen"},   -- Leinenstoffballen
+  [2592]  = {recipient="ITWoll"},     -- Wollstoff
+  [2997]  = {recipient="ITWoll"},     -- Wollstoffballen
+  [4306]  = {recipient="ITSeiden"},   -- Seidenstoff
+  [4305]  = {recipient="ITSeiden"},   -- Seidenstoffballen
+  [4338]  = {recipient="ITMagie"},    -- Magiestoff
+  [4339]  = {recipient="ITMagie"},    -- Magiestoffballen
+  [14047] = {recipient="ITRunen"},    -- Runenstoff
+  [14048] = {recipient="ITRunen"},    -- Runenstoffballen
+  [14256] = {recipient="ITTeufels"},  -- Teufelsstoff
+  [14342] = {recipient="ITMond"},     -- Mondstoff
+
   
    
--- Erze und Steine: 
-  [2770] = {recipient="ITKupfer"},      -- Kupfererz
-  [2840] = {recipient="ITKupfer"},      -- Kupferbarren
+-- Erze & Barren
+  [2770]  = {recipient="ITKupfer"},   -- Kupfererz
+  [2840]  = {recipient="ITKupfer"},   -- Kupferbarren
+  [2771]  = {recipient="ITZinn"},     -- Zinnerz
+  [2836]  = {recipient="ITZinn"},     -- Rauher Stein (Coarse Stone)
+  [2841]  = {recipient="ITZinn"},     -- Bronzebarren
+  [2772]  = {recipient="ITEisen"},    -- Eisenerz
+  [3575]  = {recipient="ITEisen"},    -- Eisenbarren
+  [2838]  = {recipient="ITEisen"},    -- Schwerer Stein
+  [3858]  = {recipient="ITMithril"},  -- Mithrilerz
+  [3860]  = {recipient="ITMithril"},  -- Mithrilbarren
+  [7912]  = {recipient="ITMithril"},  -- Robuster Stein (Solid Stone)
+  [11370] = {recipient="ITMCerz"},    -- Dunkeleisenerz
+  [11371] = {recipient="ITMCerz"},    -- Dunkeleisenbarren
+  [12359] = {recipient="ITThorium"},  -- Thoriumbarren
+  [10620] = {recipient="ITThorium"},  -- Thoriumerz
+  [12365] = {recipient="ITThorium"},  -- Verdichteter Stein (Dense Stone)
 
-  [2771] = {recipient="ITZinn"},      -- Zinn Erz
-  [2836] = {recipient="ITZinn"},      -- Coarse Stone
-  [2841] = {recipient="ITZinn"},      -- Bronze Barren
-  [2772] = {recipient="ITEisen"},      -- Iron Erz
-  [2838] = {recipient="ITEisen"},      -- Schwerer Stein
-  [11370] = {recipient="ITMCerz"},      -- Duneleisenerz
-  [7911] = {recipient="ITSilber"},      -- Echt Silber
-  [3577] = {recipient="ITSilber"},      -- Gold Barren
-  [2842] = {recipient="ITSilber"},      -- Silber Barren
-  [10620] = {recipient="ITThorium"},      -- Thorium Erz
-  [12365] = {recipient="ITThorium"},      -- Dense Stone
+-- Edelmetalle
+  [2775]  = {recipient="ITSilber"},   -- Silbererz
+  [2842]  = {recipient="ITSilber"},   -- Silberbarren
+  [2776]  = {recipient="ITGold"},     -- Golderz
+  [3577]  = {recipient="ITGold"},     -- Goldbarren
+  [7911]  = {recipient="ITSilber"},   -- Echtsilbererz
+  [12360] = {recipient="ITGem"},      -- Arkanitbarren
+
   
   
- -- Leder
+-- Leder & Häute
   [2318]  = {recipient="ITLeder"}, -- Leichtes Leder
-[2319]  = {recipient="ITLeder"}, -- Mittleres Leder
-[4234]  = {recipient="ITLeder"}, -- Schweres Leder
-[4232]  = {recipient="ITLeder"}, -- Medium Hide
+  [2319]  = {recipient="ITLeder"}, -- Mittleres Leder
+  [4234]  = {recipient="ITLeder"}, -- Schweres Leder
+  [4304]  = {recipient="ITLeder"}, -- Dickes Leder
+  [8170]  = {recipient="ITLeder"}, -- Unverwüstliches Leder
+  [15419] = {recipient="ITLeder"}, -- Gerissenes Leder (Dragonscale)
 
--- Edelsteine
-  [7910]  = {recipient="ITGem"}, -- Sternrubin
-  [55250] = {recipient="ITGem"}, -- Emberstone
-  [61673] = {recipient="ITGem"}, -- Arcane Essenz
-  [12363] = {recipient="ITGem"}, -- Arcane Kristall
-  [7909]  = {recipient="ITGem"}, -- Aquamarine
-  [55252] = {recipient="ITGem"}, -- Imperial Topaz
-  [818]   = {recipient="ITGem"}, -- Tigerauge
-  [81094] = {recipient="ITGem"}, -- Amber Topaz
-  [3864] = {recipient="ITGem"}, -- Citrine
-  [1529] = {recipient="ITGem"}, -- Jade
-  [7076] = {recipient="ITGem"}, -- Essenz der Erde
-  [12800] = {recipient="ITGem"}, -- Azerothian Diamond
-
-
-    
+-- Häute
+  [4232]  = {recipient="ITLeder"}, -- Mittleres Balg (Medium Hide)
+  [4235]  = {recipient="ITLeder"}, -- Schweres Balg (Heavy Hide)
+  [4461]  = {recipient="ITLeder"}, -- Raptorbalg
+  [7428]  = {recipient="ITLeder"}, -- Schattenkatzenbalg
+  [8169]  = {recipient="ITLeder"}, -- Dickes Balg
+  [8171]  = {recipient="ITLeder"}, -- Unverwüstliches Balg
+  [15423] = {recipient="ITLeder"}, -- Unreifes Drachenschuppenbalg
    
--- Kochzeugs
-  [12205] = {recipient="ITKoch"},      -- Weißes Spinenfleisch
-  [3685] = {recipient="ITKoch"},      -- Rapoter Eier
-  [12203] = {recipient="ITKoch"},      -- Red Wolf Meat
   
--- ZG
-  [19699] = {recipient="ITZG"},      --   Schmuck & Münzen
-  [19700] = {recipient="ITZG"},      --    Schmuck & Münzen
-  [19701] = {recipient="ITZG"},      --   Schmuck & Münzen
-  [19702] = {recipient="ITZG"},      --  Schmuck & Münzen
-  [19703] = {recipient="ITZG"},      --    Schmuck & Münzen
-  [19704] = {recipient="ITZG"},      --  Schmuck & Münzen
-  [19705] = {recipient="ITZG"},      --  Schmuck & Münzen
-  [19706] = {recipient="ITZG"},      --  Schmuck & Münzen
-  [19707] = {recipient="ITZG"},      --  Schmuck & Münzen
-  [19708] = {recipient="ITZG"},      --  Schmuck & Münzen
-  [19709] = {recipient="ITZG"},      --   Schmuck & Münzen 
-  [19710] = {recipient="ITZG"},      --   Schmuck & Münzen
-  [19711] = {recipient="ITZG"},      --   Schmuck & Münzen
-  [19712] = {recipient="ITZG"},      --   Schmuck & Münzen
-  [19713] = {recipient="ITZG"},      --   Schmuck & Münzen
-  [19714] = {recipient="ITZG"},      --   Schmuck & Münzen
-  [19715] = {recipient="ITZG"},      --   Schmuck & Münzen
+  -- Edelsteine & Kristalle
+  [818]   = {recipient="ITGem"}, -- Tigerauge
+  [774]   = {recipient="ITGem"}, -- Malachit
+  [1210]  = {recipient="ITGem"}, -- Schattengem
+  [1705]  = {recipient="ITGem"}, -- Geringer Mondstein
+  [1529]  = {recipient="ITGem"}, -- Jade
+  [3864]  = {recipient="ITGem"}, -- Citrin
+  [7909]  = {recipient="ITGem"}, -- Aquamarin
+  [7910]  = {recipient="ITGem"}, -- Sternrubin
+  [12800] = {recipient="ITGem"}, -- Azerothdiamant
+  [12361] = {recipient="ITGem"}, -- Blauer Saphir
+  [12799] = {recipient="ITGem"}, -- Große Opal
+  [12363] = {recipient="ITGem"}, -- Arkankristall
+  [55250] = {recipient="ITGem"}, -- Emberstone
+  [55252] = {recipient="ITGem"}, -- Imperial Topaz
+  [61673] = {recipient="ITGem"}, -- Arcane Essenz
+  [81094] = {recipient="ITGem"}, -- Amber Topaz
+   
+-- Kochzutaten (Fleisch, Eier, Fisch, Sonstiges)
+
+-- Allgemeines Fleisch
+[2672]  = {recipient="ITKoch"}, -- Sehniges Wolfsmuskelfleisch (Stringy Wolf Meat)
+[2673]  = {recipient="ITKoch"}, -- Coyote-Fleisch (Coyote Meat)
+[2677]  = {recipient="ITKoch"}, -- Eberrippchen (Boar Ribs)
+[2675]  = {recipient="ITKoch"}, -- Krokiliskenfleisch (Crawler Claw/Crawler Meat)
+[2886]  = {recipient="ITKoch"}, -- Kodofleisch (Crag Boar Meat)
+[3173]  = {recipient="ITKoch"}, -- Bärenfleisch (Bear Meat)
+[3174]  = {recipient="ITKoch"}, -- Spinnenfleisch (Spider Ichor)
+[3404]  = {recipient="ITKoch"}, -- Bussardflügel (Buzzard Wing)
+[3667]  = {recipient="ITKoch"}, -- Tundra-Neintöterfleisch (Tender Crocolisk Meat)
+[3730]  = {recipient="ITKoch"}, -- Großbärenfleisch (Big Bear Meat)
+[3731]  = {recipient="ITKoch"}, -- Löwenfleisch (Lion Meat)
+[4232]  = {recipient="ITKoch"}, -- Balg → eher Leder (kann man weglassen, war mal Kochzutat in Rezepten)
+[4655]  = {recipient="ITKoch"}, -- Riesige Muschel (Giant Clam Meat)
+[5465]  = {recipient="ITKoch"}, -- Kleines Spinnenbein (Small Spider Leg)
+[5467]  = {recipient="ITKoch"}, -- Krummsäbelwels (Kodo Meat alt?)
+[5468]  = {recipient="ITKoch"}, -- Weichschnapperschwanz (Soft Frenzy Flesh)
+[5470]  = {recipient="ITKoch"}, -- Donnerfalkenbrust (Thunder Lizard Tail)
+[5471]  = {recipient="ITKoch"}, -- Rehfleisch (Stag Meat)
+[5503]  = {recipient="ITKoch"}, -- Muschelfleisch (Clam Meat)
+[5504]  = {recipient="ITKoch"}, -- Tangwurmfleisch (Tangy Clam Meat)
+[6289]  = {recipient="ITKoch"}, -- Roher Langzahniger Schlammfisch (Raw Longjaw Mud Snapper)
+[6291]  = {recipient="ITKoch"}, -- Roher glänzender Kleinfisch (Raw Brilliant Smallfish)
+[6308]  = {recipient="ITKoch"}, -- Roher Schleicherfisch (Raw Bristle Whisker Catfish)
+[6317]  = {recipient="ITKoch"}, -- Rohes Lochfischfilet (Raw Loch Frenzy)
+[6361]  = {recipient="ITKoch"}, -- Roher Regenbogenflossenthunfisch (Raw Rainbow Fin Albacore)
+[6362]  = {recipient="ITKoch"}, -- Roher Steinbissen (Raw Rockscale Cod)
+[6522]  = {recipient="ITKoch"}, -- Gelbschwanz-Thunfisch (Raw Yellowtail)
+[6889]  = {recipient="ITKoch"}, -- Kleines Ei (Small Egg)
+[7974]  = {recipient="ITKoch"}, -- Zartes Muschelfleisch (Zesty Clam Meat)
+[8365]  = {recipient="ITKoch"}, -- Roher Mithrilkopfforelle (Raw Mithril Head Trout)
+[12202] = {recipient="ITKoch"}, -- Tigerfleisch (Tiger Meat)
+[12203] = {recipient="ITKoch"}, -- Rotes Wolfsfleisch (Red Wolf Meat)
+[12204] = {recipient="ITKoch"}, -- Schweres Kodofleisch (Heavy Kodo Meat)
+[12205] = {recipient="ITKoch"}, -- Weißes Spinnenfleisch (White Spider Meat)
+[12206] = {recipient="ITKoch"}, -- Zartes Krebsfleisch (Tender Crab Meat)
+[12207] = {recipient="ITKoch"}, -- Riesenei (Giant Egg)
+[12208] = {recipient="ITKoch"}, -- Zartes Wolfsfleisch (Tender Wolf Meat)
+[12803] = {recipient="ITKoch"}, -- Lebendiges Wasser (Living Essence, für Delikatessen)
+[13545] = {recipient="ITKoch"}, -- Muschelfleisch (Shellfish)
+[13754] = {recipient="ITKoch"}, -- Roher glänzender Machtfisch (Raw Glossy Mightfish)
+[13755] = {recipient="ITKoch"}, -- Roher Sonnenschuppenlachs (Raw Sunscale Salmon)
+[13756] = {recipient="ITKoch"}, -- Roher Nachtflossenschnapper (Raw Nightfin Snapper)
+[13758] = {recipient="ITKoch"}, -- Roher Rotkiemen (Raw Redgill)
+[13759] = {recipient="ITKoch"}, -- Roher Weißschuppenlachs (Raw White Scale Salmon)
+[13888] = {recipient="ITKoch"}, -- Dunkelblauer Hecht (Darkclaw Lobster / Darkclaw Snapper)
+[13889] = {recipient="ITKoch"}, -- Roher Stoppelflossenthunfisch (Raw Bluefin)
+[13890] = {recipient="ITKoch"}, -- Roher Großmaulfisch (Raw Large Mouth Bass)
+[13926] = {recipient="ITKoch"}, -- Goldperle (Golden Pearl, auch Kochzutat)
+[12037] = {recipient="ITKoch"}, -- Geheimnisvolles Fleisch (Mystery Meat)
+[12184] = {recipient="ITKoch"}, -- Raptorflanke (Raptor Flesh)
+[12223] = {recipient="ITKoch"}, -- Fleischiger Fledermausflügel (Meaty Bat Wing)
+[3172]  = {recipient="ITKoch"}, -- Eberfleisch (Boar Intestines / Bear?)
+[3402]  = {recipient="ITKoch"}, -- Weiches Fell → in Rezepten
+[3685]  = {recipient="ITKoch"}, -- Raptorei (Raptor Egg)
+[3734]  = {recipient="ITKoch"}, -- Rezept-Slot
+[8959]  = {recipient="ITKoch"}, -- Roher gespaltener Maulschlund (Raw Spinefin Halibut)
+[8957]  = {recipient="ITKoch"}, -- Stoppelflossenthunfisch
+
   
--- AQ
-  [22202] = {recipient="ITZG"},      --   Small Obsidian Shard
-  [20863] = {recipient="ITZG"},      --   Scarab and Idol
-  [20864] = {recipient="ITZG"},      --   Scarab and Idol
-  [20865] = {recipient="ITZG"},      --   Scarab and Idol
-  [20866] = {recipient="ITZG"},      --   Scarab and Idol
-  [20867] = {recipient="ITZG"},      --   Scarab and Idol
+-- ZG: Münzen (9 Stück)
+[19698] = {recipient="ITZG"}, -- Zulian Coin
+[19699] = {recipient="ITZG"}, -- Razzashi Coin
+[19700] = {recipient="ITZG"}, -- Hakkari Coin
+[19701] = {recipient="ITZG"}, -- Gurubashi Coin
+[19702] = {recipient="ITZG"}, -- Vilebranch Coin
+[19703] = {recipient="ITZG"}, -- Witherbark Coin
+[19704] = {recipient="ITZG"}, -- Sandfury Coin
+[19705] = {recipient="ITZG"}, -- Skullsplitter Coin
+[19706] = {recipient="ITZG"}, -- Bloodscalp Coin
+
+-- ZG: Hakkari-Bijous (8 Farben)
+[19707] = {recipient="ITZG"}, -- Red Hakkari Bijou
+[19708] = {recipient="ITZG"}, -- Blue Hakkari Bijou
+[19709] = {recipient="ITZG"}, -- Green Hakkari Bijou
+[19710] = {recipient="ITZG"}, -- Purple Hakkari Bijou
+[19711] = {recipient="ITZG"}, -- Yellow Hakkari Bijou
+[19712] = {recipient="ITZG"}, -- Orange Hakkari Bijou
+[19713] = {recipient="ITZG"}, -- Bronze Hakkari Bijou
+[19714] = {recipient="ITZG"}, -- Silver Hakkari Bijou
+  [19774] = {recipient="ITZG"},      --   Souldarite
   
--- Kraut
-  [13463] = {recipient="ITKraut"}, -- Traumblatt
-  [3355]  = {recipient="ITKraut"}, -- Wildstahlblume
-  [3818]  = {recipient="ITKraut"}, -- Fadeleaf
-  [3820]  = {recipient="ITKrauta"}, -- Stranglekelp 
-  [3356]  = {recipient="ITKraut"}, -- Kingsblood
-  [785]  = {recipient="ITKrauta"}, -- Mageroyal 
---  [3820]  = {recipient="ITKraut"}, -- Stranglekelp 
-  [2450]  = {recipient="ITKrauta"}, -- Briathorn 
-  [2453]  = {recipient="ITKrauta"}, -- Bruiseweed 
-  [8845]  = {recipient="ITKrauta"}, -- Geisterpilz 
+
+-- AQ: Skarabäen (8 Stück)
+[20858] = {recipient="ITAQ"}, -- Stone Scarab
+[20859] = {recipient="ITAQ"}, -- Gold Scarab
+[20860] = {recipient="ITAQ"}, -- Silver Scarab
+[20861] = {recipient="ITAQ"}, -- Bronze Scarab
+[20862] = {recipient="ITAQ"}, -- Crystal Scarab
+[20863] = {recipient="ITAQ"}, -- Clay Scarab
+[20864] = {recipient="ITAQ"}, -- Bone Scarab
+[20865] = {recipient="ITAQ"}, -- Ivory Scarab
   
+-- AQ: Idole (8 Stück)
+[20874] = {recipient="ITAQ"}, -- Idol of the Sun
+[20875] = {recipient="ITAQ"}, -- Idol of Night
+[20876] = {recipient="ITAQ"}, -- Idol of Death
+[20877] = {recipient="ITAQ"}, -- Idol of the Sage
+[20878] = {recipient="ITAQ"}, -- Idol of Rebirth
+[20879] = {recipient="ITAQ"}, -- Idol of Life
+[20881] = {recipient="ITAQ"}, -- Idol of Strife
+[20882] = {recipient="ITAQ"}, -- Idol of War
+  
+-- MC
+  [17010] = {recipient="ITMC"}, -- Feuerkern (Fiery Core)
+  [17011] = {recipient="ITMC"}, -- Lavakern (Lava Core)
+  [17012] = {recipient="ITMC"}, -- Leder: Kernleder (Core Leather)
+  [17203] = {recipient="ITMC"}, -- Sulfuronblock (Sulfuron Ingot)
+  
+-- Warrior – Battlegear of Might
+[16861] = {recipient="ITMC"}, -- Bracers of Might
+[16864] = {recipient="ITMC"}, -- Belt of Might
+
+-- Paladin – Lawbringer Armor
+[16857] = {recipient="ITMC"}, -- Lawbringer Bracers
+[16858] = {recipient="ITMC"}, -- Lawbringer Belt
+
+-- Rogue – Nightslayer Armor
+[16825] = {recipient="ITMC"}, -- Nightslayer Bracelets
+[16827] = {recipient="ITMC"}, -- Nightslayer Belt
+
+-- Hunter – Giantstalker Armor
+[16850] = {recipient="ITMC"}, -- Giantstalker's Bracers
+[16851] = {recipient="ITMC"}, -- Giantstalker's Belt
+
+-- Mage – Arcanist Regalia
+[16799] = {recipient="ITMC"}, -- Arcanist Bindings
+[16802] = {recipient="ITMC"}, -- Arcanist Belt
+
+-- Warlock – Felheart Raiment
+[16804] = {recipient="ITMC"}, -- Felheart Bracers
+[16806] = {recipient="ITMC"}, -- Felheart Belt
+
+-- Priest – Vestments of Prophecy
+[16819] = {recipient="ITMC"}, -- Vambraces of Prophecy
+[16817] = {recipient="ITMC"}, -- Girdle of Prophecy
+
+-- Druid – Cenarion Raiment
+[16830] = {recipient="ITMC"}, -- Cenarion Bracers
+[16828] = {recipient="ITMC"}, -- Cenarion Belt
+
+-- Shaman – Earthfury Raiment (Horde)
+[16840] = {recipient="ITMC"}, -- Earthfury Bracers
+[16838] = {recipient="ITMC"}, -- Earthfury Belt
+  
+-- Kräuter 
+  [765]   = {recipient="ITKrauta"}, -- Silberblatt
+  [785]   = {recipient="ITKrauta"}, -- Maguskönigskraut (Mageroyal)
+  [2447]  = {recipient="ITKrauta"}, -- Friedensblume
+  [2449]  = {recipient="ITKrauta"}, -- Erdwurzel
+  [2450]  = {recipient="ITKrauta"}, -- Wilddornrose (Briarthorn)
+  [2452]  = {recipient="ITKrauta"}, -- Schwärzliche Tollkirsche (Swiftthistle)
+  [2453]  = {recipient="ITKrauta"}, -- Bärenklaue (Bruiseweed)
+  [3355]  = {recipient="ITKraut"}, -- Wildstahlblume (Wild Steelbloom)
+  [3356]  = {recipient="ITKrauta"}, -- Königsblut (Kingsblood)
+  [3357]  = {recipient="ITKrauta"}, -- Lebenswurz (Liferoot)
+  [3358]  = {recipient="ITKrauta"}, -- Khadgars Schnurrbart (Khadgar's Whisker)
+  [3369]  = {recipient="ITKraut"}, -- Grabmoos (Grave Moss)
+  [3818]  = {recipient="ITKraut"}, -- Fadeleaf (Blassblatt)
+  [3819]  = {recipient="ITKraut"}, -- Winterbiss (Wintersbite)
+  [3820]  = {recipient="ITKraut"}, -- Würgekraut (Stranglekelp)
+  [3821]  = {recipient="ITKraut"}, -- Goldener Sansam (Goldthorn)
+  [4625]  = {recipient="ITKraut"}, -- Feuermilch (Firebloom)
+  [8831]  = {recipient="ITKraut"}, -- Lila Lotus (Purple Lotus)
+  [8836]  = {recipient="ITKraut"}, -- Arthas’ Tränen (Arthas’ Tears)
+  [8838]  = {recipient="ITKraut"}, -- Sonnengras (Sungrass)
+  [8839]  = {recipient="ITKraut"}, -- Blindkraut (Blindweed)
+  [8845]  = {recipient="ITKraut"}, -- Geisterpilz (Ghost Mushroom)
+  [8846]  = {recipient="ITKraut"}, -- Gromsblut (Gromsblood)
+  [13463] = {recipient="ITKraut"}, -- Traumblatt (Dreamfoil)
+  [13464] = {recipient="ITKraut"}, -- Goldener Sansam (Golden Sansam)
+  [13465] = {recipient="ITKraut"}, -- Bergsilbersalbei (Mountain Silversage)
+  [13466] = {recipient="ITKraut"}, -- Pestblüte (Plaguebloom)
+  [13467] = {recipient="ITKraut"}, -- Eiskappe (Icecap)
+  [13468] = {recipient="ITKraut"}, -- Schwarzer Lotus (Black Lotus)
+
+ -- Alchemie-Fische → Öle (gehen an ITFisch)
+
+[6358]  = {recipient="ITFisch"}, -- Ölhaltiger Schwarzmaul (Oily Blackmouth) → Schwarzmaulöl
+[6359]  = {recipient="ITFisch"}, -- Feuerschwanzschnapper (Firefin Snapper) → Feuerschwanzöl
+[13422] = {recipient="ITFisch"}, -- Steinschuppenaal (Stonescale Eel) → Steinschuppenöl 
 	
 
--- VZ
-  [10940] = {recipient="ITVZ"},      --  Strange Dust
-  [10938] = {recipient="ITVZ"},      --  Lesser Magic Essence
-  [10939] = {recipient="ITVZ"},      --  Greater Magic Essence
-  [10998] = {recipient="ITVZ"},      --  Lesser Astral Essence
-  [11082] = {recipient="ITVZ"},      --  Greater Astral Essence
-  [11083] = {recipient="ITVZ"},      --  Soul Dust
-  [16204] = {recipient="ITVZ"},      --  Illusion Dust
-  [11176] = {recipient="ITVZ"},      --  Dream Dust
-  [11137] = {recipient="ITVZ"},      --  Vision Dust
-  [16202] = {recipient="ITVZ"},      --  Lesser Eternal Essence
-  [16203] = {recipient="ITVZ"},      --  Lesser Eternal Essence
-  [20725] = {recipient="ITVZ"},      --  Nexus
-  [11138] = {recipient="ITVZ"},      --  Small Glowing Shard
-  [11139] = {recipient="ITVZ"},      --  Large Glowing Shard
-  [14343] = {recipient="ITVZ"},      --  Small Brilliant Shard
-  [14344] = {recipient="ITVZ"},      --  Large Brilliant Shard
-  [11178] = {recipient="ITVZ"},      --  Large Radiant Shard
+-- VZ: Verzauberungsmaterialien
+  -- Splitter
+  [14343] = {recipient="ITVZ"}, -- Geringer glänzender Splitter
+  [14344] = {recipient="ITVZ"}, -- Großer glänzender Splitter
+  [11138] = {recipient="ITVZ"}, -- Geringer leuchtender Splitter
+  [11139] = {recipient="ITVZ"}, -- Großer leuchtender Splitter
+  [11177] = {recipient="ITVZ"}, -- Geringer glimmernder Splitter
+  [11178] = {recipient="ITVZ"}, -- Großer glimmernder Splitter
+  [10978] = {recipient="ITVZ"}, -- Geringer astraler Splitter
+  [11084] = {recipient="ITVZ"}, -- Großer astraler Splitter
+
+  -- Essenzen (Magie)
+  [10938] = {recipient="ITVZ"}, -- Geringe Magie-Essenz
+  [10939] = {recipient="ITVZ"}, -- Große Magie-Essenz
+  [10998] = {recipient="ITVZ"}, -- Geringe Astralessenz
+  [11082] = {recipient="ITVZ"}, -- Große Astralessenz
+  [11134] = {recipient="ITVZ"}, -- Geringe Mystische Essenz
+  [11135] = {recipient="ITVZ"}, -- Große Mystische Essenz
+  [11174] = {recipient="ITVZ"}, -- Geringe Netheressenz
+  [11175] = {recipient="ITVZ"}, -- Große Netheressenz
+  [16202] = {recipient="ITVZ"}, -- Geringe Ewige Essenz
+  [16203] = {recipient="ITVZ"}, -- Große Ewige Essenz
+
+  -- Kristalle
+  [20725] = {recipient="ITVZ"}, -- Nexuskristall
+
+  -- Staub
+  [10940] = {recipient="ITVZ"}, -- Seltsamer Staub
+  [11083] = {recipient="ITVZ"}, -- Seelenstaub
+  [11137] = {recipient="ITVZ"}, -- Visionenstaub
+  [11176] = {recipient="ITVZ"}, -- Traumstaub
+  [16204] = {recipient="ITVZ"}, -- Illusionsstaub
+
 
 -- Schließkassetten
-  [4633] = {recipient="Rshock"},      -- Heavy Bronze Lockbox
-  [4636] = {recipient="Rshock"},      -- Strong Iron Lockbox
- -- [4636] = {recipient="Rshock"},      -- Strong Iron Lockbox
- -- [4636] = {recipient="Rshock"},      -- Strong Iron Lockbox
- -- [4636] = {recipient="Rshock"},      -- Strong Iron Lockbox
- -- [4636] = {recipient="Rshock"},      -- Strong Iron Lockbox
- -- [4636] = {recipient="Rshock"},      -- Strong Iron Lockbox 
-}
+  [4632] = {recipient="Rshock"}, -- Ornate Bronze Lockbox
+  [4633] = {recipient="Rshock"}, -- Heavy Bronze Lockbox
+  [4634] = {recipient="Rshock"}, -- Iron Lockbox
+  [4636] = {recipient="Rshock"}, -- Strong Iron Lockbox
+  [4637] = {recipient="Rshock"}, -- Steel Lockbox
+  [4638] = {recipient="Rshock"}, -- Reinforced Steel Lockbox
+  [5758] = {recipient="Rshock"}, -- Mithril Lockbox
+  [5759] = {recipient="Rshock"}, -- Thorium Lockbox
+  [5760] = {recipient="Rshock"}, -- Eternium Lockbox
 
+ 
+ 
+ -- IT Bank
+[22525] = {recipient="ITBank"},      -- Crypt Fiend Parts (Spinnen dinger)
+[19933] = {recipient="ITZeugs"},      -- Glowing Scoripd Blood
+[7972] = {recipient="ITZeugs"},      -- Ichor of Undeath
+  
+-- Feuer
+  [7077] = {recipient="ITEle"}, -- Herz des Feuers (Heart of Fire)
+  [7078] = {recipient="ITEle"}, -- Essenz des Feuers (Essence of Fire)
+  [7068] = {recipient="ITEle"}, -- Elementarfeuer (Elemental Fire)
+
+-- Erde
+  [7067] = {recipient="ITEle"}, -- Elementarerde (Elemental Earth)
+  [7076] = {recipient="ITEle"}, -- Essenz der Erde (Essence of Earth)
+
+-- Wasser
+  [7070] = {recipient="ITEle"}, -- Elementarwasser (Elemental Water)
+  [7079] = {recipient="ITEle"}, -- Essenz des Wassers (Essence of Water)
+
+-- Luft
+  [7069] = {recipient="ITEle"}, -- Elementarluft (Elemental Air)
+  [7080] = {recipient="ITEle"}, -- Essenz der Luft (Essence of Air)
+  [7081] = {recipient="ITEle"}, -- Atem des Windes (Breath of Wind)
+
+-- Natur
+  [7082] = {recipient="ITEle"}, -- Essenz der Natur (Essence of Life/Nature)
+
+
+-- Kerne & andere wichtige Drops
+  [18512] = {recipient="ITEle"}, -- Kern der Elemente (Core of Elements)
+
+}
 -- ===== Utils =====
 local function RAM_Print(msg)
   if DEFAULT_CHAT_FRAME then DEFAULT_CHAT_FRAME:AddMessage("RAM: "..tostring(msg)) end
@@ -373,19 +592,7 @@ local function RAM_StartSending()
       SendMailNameEditBox:SetText(current)
       SendMailSubjectEditBox:SetText(subject)
       SendMailBodyEditBox:SetText("")
--- Safety: nur senden, wenn wirklich ein Item angeheftet ist
-local a1 = _G["SendMailAttachment1"]
-if not (a1 and a1.hasItem) then
-  -- kein Anhang? Dann brechen wir diese Iteration ab und versuchen im nächsten Tick erneut
-  RAM_Print("Kein Anhang erkannt  versuche erneut ")
-  return
-end
-
-SendMail(current, subject, "")
-
-
-
-
+      SendMail(current, subject, "")
 
       -- zählen
       sending.totals[current] = sending.totals[current] or {}
@@ -429,4 +636,3 @@ end
 local mailbox = CreateFrame("Frame")
 mailbox:RegisterEvent("MAIL_SHOW")
 mailbox:SetScript("OnEvent", RAM_CreateButton)
-
