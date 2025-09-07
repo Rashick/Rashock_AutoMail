@@ -203,40 +203,40 @@ local RAM_RULES = {
   [17203] = {recipient="ITMC"}, -- Sulfuronblock (Sulfuron Ingot)
   
 -- Warrior – Battlegear of Might
-[16861] = {recipient="ITMC"}, -- Bracers of Might
-[16864] = {recipient="ITMC"}, -- Belt of Might
+--[16861] = {recipient="ITMC"}, -- Bracers of Might
+--[16864] = {recipient="ITMC"}, -- Belt of Might
 
 -- Paladin – Lawbringer Armor
-[16857] = {recipient="ITMC"}, -- Lawbringer Bracers
-[16858] = {recipient="ITMC"}, -- Lawbringer Belt
+--[16857] = {recipient="ITMC"}, -- Lawbringer Bracers
+--[16858] = {recipient="ITMC"}, -- Lawbringer Belt
 
 -- Rogue – Nightslayer Armor
-[16825] = {recipient="ITMC"}, -- Nightslayer Bracelets
-[16827] = {recipient="ITMC"}, -- Nightslayer Belt
+--[16825] = {recipient="ITMC"}, -- Nightslayer Bracelets
+--[16827] = {recipient="ITMC"}, -- Nightslayer Belt
 
 -- Hunter – Giantstalker Armor
-[16850] = {recipient="ITMC"}, -- Giantstalker's Bracers
-[16851] = {recipient="ITMC"}, -- Giantstalker's Belt
+--[16850] = {recipient="ITMC"}, -- Giantstalker's Bracers
+--[16851] = {recipient="ITMC"}, -- Giantstalker's Belt
 
 -- Mage – Arcanist Regalia
-[16799] = {recipient="ITMC"}, -- Arcanist Bindings
-[16802] = {recipient="ITMC"}, -- Arcanist Belt
+--[16799] = {recipient="ITMC"}, -- Arcanist Bindings
+--[16802] = {recipient="ITMC"}, -- Arcanist Belt
 
 -- Warlock – Felheart Raiment
-[16804] = {recipient="ITMC"}, -- Felheart Bracers
-[16806] = {recipient="ITMC"}, -- Felheart Belt
+--[16804] = {recipient="ITMC"}, -- Felheart Bracers
+--[16806] = {recipient="ITMC"}, -- Felheart Belt
 
 -- Priest – Vestments of Prophecy
-[16819] = {recipient="ITMC"}, -- Vambraces of Prophecy
-[16817] = {recipient="ITMC"}, -- Girdle of Prophecy
+--[16819] = {recipient="ITMC"}, -- Vambraces of Prophecy
+--[16817] = {recipient="ITMC"}, -- Girdle of Prophecy
 
 -- Druid – Cenarion Raiment
-[16830] = {recipient="ITMC"}, -- Cenarion Bracers
-[16828] = {recipient="ITMC"}, -- Cenarion Belt
+--[16830] = {recipient="ITMC"}, -- Cenarion Bracers
+--[16828] = {recipient="ITMC"}, -- Cenarion Belt
 
 -- Shaman – Earthfury Raiment (Horde)
-[16840] = {recipient="ITMC"}, -- Earthfury Bracers
-[16838] = {recipient="ITMC"}, -- Earthfury Belt
+--[16840] = {recipient="ITMC"}, -- Earthfury Bracers
+--[16838] = {recipient="ITMC"}, -- Earthfury Belt
   
 -- Kräuter 
   [765]   = {recipient="ITKrauta"}, -- Silberblatt
@@ -352,6 +352,71 @@ local RAM_RULES = {
 
 -- Kerne & andere wichtige Drops
   [18512] = {recipient="ITEle"}, -- Kern der Elemente (Core of Elements)
+
+
+-- Dunkelmondkarten & Sets → ITCard
+
+-- Set: Bestien
+[19227] = {recipient="ITCard"}, -- Deck des Dunkelmond-Jahrmarkts: Bestien
+[19228] = {recipient="ITCard"}, -- Dunkelmond-Kartenset: Bestien
+[19229] = {recipient="ITCard"}, -- Beasts Deck Reward Placeholder
+[19230] = {recipient="ITCard"}, -- Dunkelmondkarte: Panther
+[19231] = {recipient="ITCard"}, -- Dunkelmondkarte: Krokilisk
+[19232] = {recipient="ITCard"}, -- Dunkelmondkarte: Hyäne
+[19233] = {recipient="ITCard"}, -- Dunkelmondkarte: Bär
+[19234] = {recipient="ITCard"}, -- Dunkelmondkarte: Affe
+[19235] = {recipient="ITCard"}, -- Dunkelmondkarte: Tiger
+[19236] = {recipient="ITCard"}, -- Dunkelmondkarte: Drache
+
+-- Dunkelmond: Warlords (Deck + Einzelkarten) → ITCard
+[19257] = {recipient="ITCard"}, -- Warlords Deck
+
+[19258] = {recipient="ITCard"}, -- Ace of Warlords
+[19259] = {recipient="ITCard"}, -- Two of Warlords
+[19260] = {recipient="ITCard"}, -- Three of Warlords
+[19261] = {recipient="ITCard"}, -- Four of Warlords
+[19262] = {recipient="ITCard"}, -- Five of Warlords
+[19263] = {recipient="ITCard"}, -- Six of Warlords
+[19264] = {recipient="ITCard"}, -- Seven of Warlords
+[19265] = {recipient="ITCard"}, -- Eight of Warlords
+
+-- Set: Portale
+[19267] = {recipient="ITCard"}, -- Deck des Dunkelmond-Jahrmarkts: Portale
+[19268] = {recipient="ITCard"}, -- Dunkelmond-Kartenset: Portale
+[19269] = {recipient="ITCard"}, -- Dunkelmondkarte: Portale (Ace of Portals)
+[19270] = {recipient="ITCard"}, -- Zwei der Portale
+[19271] = {recipient="ITCard"}, -- Drei der Portale
+[19272] = {recipient="ITCard"}, -- Vier der Portale
+[19273] = {recipient="ITCard"}, -- Fünf der Portale
+[19274] = {recipient="ITCard"}, -- Sechs der Portale
+[19275] = {recipient="ITCard"}, -- Sieben der Portale
+[19276] = {recipient="ITCard"}, -- Acht der Portale
+
+-- Set: Elemente
+[19277] = {recipient="ITCard"}, -- Deck des Dunkelmond-Jahrmarkts: Elemente
+[19278] = {recipient="ITCard"}, -- Dunkelmond-Kartenset: Elemente
+[19279] = {recipient="ITCard"}, -- Ass der Elemente
+[19280] = {recipient="ITCard"}, -- Zwei der Elemente
+[19281] = {recipient="ITCard"}, -- Drei der Elemente
+[19282] = {recipient="ITCard"}, -- Vier der Elemente
+[19283] = {recipient="ITCard"}, -- Fünf der Elemente
+[19284] = {recipient="ITCard"}, -- Sechs der Elemente
+[19285] = {recipient="ITCard"}, -- Sieben der Elemente
+[19286] = {recipient="ITCard"}, -- Acht der Elemente
+
+-- Set: Krieg
+[19287] = {recipient="ITCard"}, -- Deck des Dunkelmond-Jahrmarkts: Krieg
+[19288] = {recipient="ITCard"}, -- Dunkelmond-Kartenset: Krieg
+[19289] = {recipient="ITCard"}, -- Ass des Krieges
+[19290] = {recipient="ITCard"}, -- Zwei des Krieges
+[19291] = {recipient="ITCard"}, -- Drei des Krieges
+[19292] = {recipient="ITCard"}, -- Vier des Krieges
+[19293] = {recipient="ITCard"}, -- Fünf des Krieges
+[19294] = {recipient="ITCard"}, -- Sechs des Krieges
+[19295] = {recipient="ITCard"}, -- Sieben des Krieges
+[19296] = {recipient="ITCard"}, -- Acht des Krieges
+
+
 
 }
 -- ===== Utils =====
