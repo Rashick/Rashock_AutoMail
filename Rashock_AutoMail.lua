@@ -71,6 +71,51 @@ local RAM_RULES = {
   [8169]  = {recipient="ITLeder"}, -- Dickes Balg
   [8171]  = {recipient="ITLeder"}, -- Unverwüstliches Balg
   [15423] = {recipient="ITLeder"}, -- Unreifes Drachenschuppenbalg
+
+-- Salz
+  [8150]  = {recipient="ITLeder"}, -- Deeprock Salt
+  
+-- Taschen (Allgemein)
+[4240]  = {recipient="ITBag"}, -- Wolltasche (8 Slot)
+[4241]  = {recipient="ITBag"}, -- Grünliche Wolltasche (8 Slot, grün)
+[4496]  = {recipient="ITBag"}, -- Kleine braune Tasche (6 Slot)
+[4497]  = {recipient="ITBag"}, -- Schwerer brauner Beutel (10 Slot)
+[4498]  = {recipient="ITBag"}, -- Braune Ledertasche (8 Slot)
+[4499]  = {recipient="ITBag"}, -- Großer brauner Sack (12 Slot)
+[4500]  = {recipient="ITBag"}, -- Reisetasche (16 Slot)
+[5765]  = {recipient="ITBag"}, -- Schwarze Seidentasche (10 Slot)
+[5571]  = {recipient="ITBag"}, -- Grüne Ledertasche (8 Slot)
+[5572]  = {recipient="ITBag"}, -- Rote Ledertasche (8 Slot)
+[5573]  = {recipient="ITBag"}, -- Grüner Beutel (10 Slot)
+[5574]  = {recipient="ITBag"}, -- Weißer Beutel (10 Slot)
+[5575]  = {recipient="ITBag"}, -- Große grüne Tasche (12 Slot)
+[5576]  = {recipient="ITBag"}, -- Große braune Tasche (12 Slot)
+
+-- Stofftaschen
+[5762]  = {recipient="ITBag"}, -- Rote Wolltasche (10 Slot)
+[5763]  = {recipient="ITBag"}, -- Rote Seidentasche (12 Slot)
+[5764]  = {recipient="ITBag"}, -- Grüner Seidenbeutel (12 Slot)
+[5766]  = {recipient="ITBag"}, -- Rote Magiestofftasche (14 Slot)
+[5767]  = {recipient="ITBag"}, -- Violette Magiestofftasche (14 Slot)
+[5768]  = {recipient="ITBag"}, -- Rote Runenstofftasche (16 Slot)
+[14155] = {recipient="ITBag"}, -- Mondstofftasche (16 Slot)
+[14156] = {recipient="ITBag"}, -- Bodenlose Tasche (18 Slot, rare)
+
+-- Berufstaschen
+[5765]  = {recipient="ITBag"}, -- Schwarze Seidentasche (Leder, 10 Slot)
+[1725]  = {recipient="ITBag"}, -- Große Tasche (14 Slot)
+[5576]  = {recipient="ITBag"}, -- Große braune Tasche (12 Slot)
+
+-- Spezialtaschen (Berufe)
+[5762]  = {recipient="ITBag"}, -- Kräutertasche (Beispiel)
+[22250] = {recipient="ITBag"}, -- Kräutersatchel (12 Slot Herb Bag)
+[22251] = {recipient="ITBag"}, -- Cenarische Kräutertasche (20 Slot Herb Bag)
+[22248] = {recipient="ITBag"}, -- Verzauberertasche (Enchanted Runecloth Bag, 20 Slot Enchanting Bag)
+[22249] = {recipient="ITBag"}, -- Große Verzauberertasche (Big Enchanting Bag, 24 Slot Enchanting Bag)
+[22246] = {recipient="ITBag"}, -- Magiestofftasche (16 Slot Tailoring Bag)
+[22252] = {recipient="ITBag"}, -- Cyankomponentenbeutel (Engineering, 24 Slot Eng Bag)
+
+
    
   
   -- Edelsteine & Kristalle
@@ -90,6 +135,18 @@ local RAM_RULES = {
   [55252] = {recipient="ITGem"}, -- Imperial Topaz
   [61673] = {recipient="ITGem"}, -- Arcane Essenz
   [81094] = {recipient="ITGem"}, -- Amber Topaz
+  [55251] = {recipient="ITGem"}, -- Pure Mondstone
+  [1206] = {recipient="ITGem"},  -- Moss Agate
+  [5498] = {recipient="ITGem"},  -- Small Lustrous Pearl
+  [9262] = {recipient="ITGem"},  -- Black Vitriol
+  
+  
+  -- Machtkristalle / POwer Crystal
+  [11185]   = {recipient="ITGem"}, -- Green Power Crystal
+  [11184]   = {recipient="ITGem"}, -- Blue Power Crystal
+  [11186]   = {recipient="ITGem"}, -- Red Power Crystal
+  [11188]   = {recipient="ITGem"}, -- Yellow Power Crystal  
+  
    
 -- Kochzutaten (Fleisch, Eier, Fisch, Sonstiges)
 
@@ -131,7 +188,6 @@ local RAM_RULES = {
 [12206] = {recipient="ITKoch"}, -- Zartes Krebsfleisch (Tender Crab Meat)
 [12207] = {recipient="ITKoch"}, -- Riesenei (Giant Egg)
 [12208] = {recipient="ITKoch"}, -- Zartes Wolfsfleisch (Tender Wolf Meat)
-[12803] = {recipient="ITKoch"}, -- Lebendiges Wasser (Living Essence, für Delikatessen)
 [13545] = {recipient="ITKoch"}, -- Muschelfleisch (Shellfish)
 [13754] = {recipient="ITKoch"}, -- Roher glänzender Machtfisch (Raw Glossy Mightfish)
 [13755] = {recipient="ITKoch"}, -- Roher Sonnenschuppenlachs (Raw Sunscale Salmon)
@@ -173,7 +229,13 @@ local RAM_RULES = {
 [19712] = {recipient="ITZG"}, -- Orange Hakkari Bijou
 [19713] = {recipient="ITZG"}, -- Bronze Hakkari Bijou
 [19714] = {recipient="ITZG"}, -- Silver Hakkari Bijou
+[19715] = {recipient="ITZG"}, -- Golden Hakkari Bijou
   [19774] = {recipient="ITZG"},      --   Souldarite
+  [19726] = {recipient="ITZG"},      --   Bloodvine
+  [12804] = {recipient="ITZG"},      --   Powerful Mojo
+  
+  
+  
   
 
 -- AQ: Skarabäen (8 Stück)
@@ -271,9 +333,9 @@ local RAM_RULES = {
 
  -- Alchemie-Fische → Öle (gehen an ITFisch)
 
-[6358]  = {recipient="ITFisch"}, -- Ölhaltiger Schwarzmaul (Oily Blackmouth) → Schwarzmaulöl
-[6359]  = {recipient="ITFisch"}, -- Feuerschwanzschnapper (Firefin Snapper) → Feuerschwanzöl
-[13422] = {recipient="ITFisch"}, -- Steinschuppenaal (Stonescale Eel) → Steinschuppenöl 
+[6358]  = {recipient="ITFish"}, -- Ölhaltiger Schwarzmaul (Oily Blackmouth) → Schwarzmaulöl
+[6359]  = {recipient="ITFish"}, -- Feuerschwanzschnapper (Firefin Snapper) → Feuerschwanzöl
+[13422] = {recipient="ITFish"}, -- Steinschuppenaal (Stonescale Eel) → Steinschuppenöl 
 	
 
 -- VZ: Verzauberungsmaterialien
@@ -301,7 +363,8 @@ local RAM_RULES = {
 
   -- Kristalle
   [20725] = {recipient="ITVZ"}, -- Nexuskristall
-
+  [12811] = {recipient="ITVZ"}, -- Righteoous Orb
+  
   -- Staub
   [10940] = {recipient="ITVZ"}, -- Seltsamer Staub
   [11083] = {recipient="ITVZ"}, -- Seelenstaub
@@ -327,6 +390,13 @@ local RAM_RULES = {
 [22525] = {recipient="ITBank"},      -- Crypt Fiend Parts (Spinnen dinger)
 [19933] = {recipient="ITZeugs"},      -- Glowing Scoripd Blood
 [7972] = {recipient="ITZeugs"},      -- Ichor of Undeath
+[12809] = {recipient="ITBank"},      -- Guardian Stone
+[11018] = {recipient="ITBank"},      -- Un'Goro Soil / Ungoro Erde
+[22528] = {recipient="ITBank"},      -- Dark Iron Scraps
+
+
+
+
   
 -- Feuer
   [7077] = {recipient="ITEle"}, -- Herz des Feuers (Heart of Fire)
@@ -335,7 +405,9 @@ local RAM_RULES = {
 
 -- Erde
   [7067] = {recipient="ITEle"}, -- Elementarerde (Elemental Earth)
+  [7075] = {recipient="ITEle"}, -- Kern der Erde (Core of Earth)
   [7076] = {recipient="ITEle"}, -- Essenz der Erde (Essence of Earth)
+  
 
 -- Wasser
   [7070] = {recipient="ITEle"}, -- Elementarwasser (Elemental Water)
@@ -349,9 +421,18 @@ local RAM_RULES = {
 -- Natur
   [7082] = {recipient="ITEle"}, -- Essenz der Natur (Essence of Life/Nature)
 
+-- Untod
+  [12808] = {recipient="ITEle"}, -- Essenz des Untodes (Essence of Undead)
+
+-- Leben
+  [12803] = {recipient="ITEle"}, -- Essenz des Lebens (Living Essence)
+
 
 -- Kerne & andere wichtige Drops
-  [18512] = {recipient="ITEle"}, -- Kern der Elemente (Core of Elements)
+  [22527] = {recipient="ITEle"}, -- Kern der Elemente (Core of Elements)
+  [22526] = {recipient="ITBank"}, -- Bonen Fragments 
+  
+  
 
 
 -- Dunkelmondkarten & Sets → ITCard
