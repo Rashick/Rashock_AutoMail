@@ -31,7 +31,7 @@ local RAM_RULES = {
   [2770]  = {recipient="ITKupfer"},   -- Kupfererz
   [2840]  = {recipient="ITKupfer"},   -- Kupferbarren
   [2771]  = {recipient="ITZinn"},     -- Zinnerz
-  [2836]  = {recipient="ITZinn"},     -- Rauher Stein (Coarse Stone)
+  [2835]  = {recipient="ITZinn"},     -- Rauher Stein (Coarse Stone)
   [2841]  = {recipient="ITZinn"},     -- Bronzebarren
   [2772]  = {recipient="ITEisen"},    -- Eisenerz
   [3575]  = {recipient="ITEisen"},    -- Eisenbarren
@@ -139,6 +139,8 @@ local RAM_RULES = {
   [1206] = {recipient="ITGem"},  -- Moss Agate
   [5498] = {recipient="ITGem"},  -- Small Lustrous Pearl
   [9262] = {recipient="ITGem"},  -- Black Vitriol
+  [11754] = {recipient="ITGem"},  -- Black Diamond
+	
   
   
   -- Machtkristalle / POwer Crystal
@@ -257,6 +259,8 @@ local RAM_RULES = {
 [20879] = {recipient="ITAQ"}, -- Idol of Life
 [20881] = {recipient="ITAQ"}, -- Idol of Strife
 [20882] = {recipient="ITAQ"}, -- Idol of War
+[22202] = {recipient="ITAQ"}, -- Small Obsidian Shard
+
   
 -- MC
   [17010] = {recipient="ITMC"}, -- Feuerkern (Fiery Core)
