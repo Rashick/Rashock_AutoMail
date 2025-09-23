@@ -140,6 +140,7 @@ local RAM_RULES = {
   [5498] = {recipient="ITGem"},  -- Small Lustrous Pearl
   [9262] = {recipient="ITGem"},  -- Black Vitriol
   [11754] = {recipient="ITGem"},  -- Black Diamond
+  [12364] = {recipient="ITGem"},  -- Huge Emerald
 	
   
   
@@ -786,3 +787,4 @@ end
 local mailbox = CreateFrame("Frame")
 mailbox:RegisterEvent("MAIL_SHOW")
 mailbox:SetScript("OnEvent", RAM_CreateButton)
+
