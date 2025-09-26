@@ -98,9 +98,10 @@ local RAM_RULES = {
 [5764]  = {recipient="ITBag"}, -- Grüner Seidenbeutel (12 Slot)
 [5766]  = {recipient="ITBag"}, -- Rote Magiestofftasche (14 Slot)
 [5767]  = {recipient="ITBag"}, -- Violette Magiestofftasche (14 Slot)
+[14046]  = {recipient="ITBag"}, -- Runenstofftasche (14 Slot)
 [5768]  = {recipient="ITBag"}, -- Rote Runenstofftasche (16 Slot)
-[14155] = {recipient="ITBag"}, -- Mondstofftasche (16 Slot)
-[14156] = {recipient="ITBag"}, -- Bodenlose Tasche (18 Slot, rare)
+[14155] = {recipient="ITBag"}, -- Mondstofftasche (18 Slot)
+[14156] = {recipient="ITBag"}, -- Bodenlose Tasche (20 Slot, rare)
 
 -- Berufstaschen
 [5765]  = {recipient="ITBag"}, -- Schwarze Seidentasche (Leder, 10 Slot)
@@ -1004,4 +1005,5 @@ RAM_MailUIHook:SetScript("OnEvent", function()
     RAM_CreateInboxButtons()
   end
 end)
+
 
