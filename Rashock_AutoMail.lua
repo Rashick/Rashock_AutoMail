@@ -141,6 +141,7 @@ local RAM_RULES = {
   [5498] = {recipient="ITGem"},  -- Small Lustrous Pearl
   [9262] = {recipient="ITGem"},  -- Black Vitriol
   [11754] = {recipient="ITGem"},  -- Black Diamond
+  [12364] = {recipient="ITGem"},  -- Huge Emerald
 	
   
   
@@ -261,6 +262,7 @@ local RAM_RULES = {
 [20881] = {recipient="ITAQ"}, -- Idol of Strife
 [20882] = {recipient="ITAQ"}, -- Idol of War
 [22202] = {recipient="ITAQ"}, -- Small Obsidian Shard
+[22203] = {recipient="ITAQ"}, -- Large Obsidian Shard
 
   
 -- MC
@@ -1002,3 +1004,4 @@ RAM_MailUIHook:SetScript("OnEvent", function()
     RAM_CreateInboxButtons()
   end
 end)
+
