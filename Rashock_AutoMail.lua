@@ -6,7 +6,8 @@ local PREFIX = "RAM"
 local ATTACHMENTS_MAX = 1
 local SEND_DELAY = 0.6
 local RAM_DEBUG = false
-
+-- ===== Inbox Auto-Loot =====
+local INBOX_DELAY = 0.2  -- ähnlich wie SEND_DELAY
 -- ===== Regeln: ItemID -> Empfänger (subject optional; sonst dynamisch "RAM: <ItemName>") =====
 local RAM_RULES = {
 
@@ -140,7 +141,6 @@ local RAM_RULES = {
   [5498] = {recipient="ITGem"},  -- Small Lustrous Pearl
   [9262] = {recipient="ITGem"},  -- Black Vitriol
   [11754] = {recipient="ITGem"},  -- Black Diamond
-  [12364] = {recipient="ITGem"},  -- Huge Emerald
 	
   
   
@@ -532,6 +532,24 @@ loader:SetScript("OnEvent", function(_, _, name)
   end
 end)
 
+-- == Post Eingang
+-- Prüfen, ob Posteingang sichtbar/benutzbar ist
+local function RAM_IsInboxReady()
+  return MailFrame and MailFrame:IsShown() and InboxFrame and InboxFrame:IsShown()
+end
+
+-- Anzahl Attachments an Mail i (Classic: max 12, oft 1..12)
+local function RAM_GetNumAttachments(i)
+  local n = 0
+  for a = 1, 12 do
+    local name, itemID, texture, count, quality, canUse = GetInboxItem(i, a)
+    if name then n = n + 1 end
+  end
+  return n
+end
+
+
+
 -- ===== Helpers (Lua 5.0 safe) =====
 local function RAM_GetItemID(link)
   if not link then return nil end
@@ -765,6 +783,145 @@ local function RAM_StartSending()
   end)
 end
 
+
+
+-- ===== Open AZ (neu -> alt) =====
+local inboxFrame = CreateFrame("Frame")
+local openAZ = {
+  active = false,
+  idx    = 0,     -- aktueller Mail-Index
+  att    = 1,     -- aktueller Attachment-Slot
+  lastT  = 0,
+  looted = 0,     -- Statistik
+  money  = 0,
+}
+
+local function RAM_OpenAZ_Stop(msg)
+  inboxFrame:SetScript("OnUpdate", nil)
+  openAZ.active = false
+  if msg then RAM_Print(msg) end
+
+-- Fallback: einfache Gold/Silber/Kupfer-Ausgabe
+local g = math.floor(openAZ.money / (100*100))
+local s = math.floor((openAZ.money - g*100*100) / 100)
+local c = openAZ.money - math.floor(openAZ.money / 100) * 100
+RAM_Print("Open AZ fertig. Anhänge: "..openAZ.looted..", Gold: "..g.."g "..s.."s "..c.."c")
+
+end
+
+local function RAM_IsInboxReady()
+  return MailFrame and MailFrame:IsShown() and InboxFrame and InboxFrame:IsShown()
+end
+
+local function RAM_GetNumAttachments(i)
+  local n = 0
+  for a = 1, 12 do
+    local name = GetInboxItem(i, a)
+    if name then n = n + 1 end
+  end
+  return n
+end
+
+local function RAM_OpenAZ_Start()
+  if openAZ.active then
+    RAM_Print("Open AZ läuft bereits.")
+    return
+  end
+  if not RAM_IsInboxReady() then
+    RAM_Print("Posteingang nicht bereit.")
+    return
+  end
+
+  local total = GetInboxNumItems() or 0
+  if total == 0 then
+    RAM_Print("Keine Post vorhanden.")
+    return
+  end
+
+  openAZ.active = true
+  openAZ.idx    = total        -- Start: neueste Mail (höchster Index)
+  openAZ.att    = 1
+  openAZ.lastT  = 0
+  openAZ.looted = 0
+  openAZ.money  = 0
+
+  RAM_Print("Open AZ gestartet...")
+
+  inboxFrame:SetScript("OnUpdate", function()
+    local now = GetTime and GetTime() or 0
+    if openAZ.lastT == 0 then openAZ.lastT = now end
+    if now - openAZ.lastT < INBOX_DELAY then return end
+
+    -- Mailbox noch sichtbar?
+    if not RAM_IsInboxReady() then
+      RAM_OpenAZ_Stop("Postfach geschlossen – Stop.")
+      return
+    end
+
+    local i = openAZ.idx
+    if i < 1 then
+      RAM_OpenAZ_Stop(nil)
+      return
+    end
+
+    local _, _, sender, subject, money, CODAmount, _, hasItem = GetInboxHeaderInfo(i)
+
+    -- Nachnahme überspringen
+    if CODAmount and CODAmount > 0 then
+      openAZ.idx  = i - 1
+      openAZ.att  = 1
+      openAZ.lastT = now
+      return
+    end
+
+    -- Zuerst Geld nehmen
+    if money and money > 0 then
+      if CursorHasItem and CursorHasItem() then ClearCursor() end
+      TakeInboxMoney(i)
+      openAZ.money = openAZ.money + money
+      openAZ.lastT = now
+      return
+    end
+
+    -- Attachments einsammeln
+    local numAtt = RAM_GetNumAttachments(i)
+    if numAtt > 0 then
+      if CursorHasItem and CursorHasItem() then ClearCursor() end
+
+      local a = openAZ.att
+      while a <= 12 do
+        local name = GetInboxItem(i, a)
+        if name then
+          TakeInboxItem(i, a)
+          openAZ.looted = openAZ.looted + 1
+          openAZ.att = a + 1
+          openAZ.lastT = now
+          return
+        end
+        a = a + 1
+      end
+
+      -- keine Attachments mehr -> nächste Mail
+      openAZ.idx  = i - 1
+      openAZ.att  = 1
+      openAZ.lastT = now
+      return
+    end
+
+    -- Weder Geld noch Attachments -> nächste Mail
+    openAZ.idx  = i - 1
+    openAZ.att  = 1
+    openAZ.lastT = now
+  end)
+end
+
+-- Safety: Bei Postfach-Schließen stoppen
+local closeWatcher = CreateFrame("Frame")
+closeWatcher:RegisterEvent("MAIL_CLOSED")
+closeWatcher:SetScript("OnEvent", function()
+  if openAZ.active then RAM_OpenAZ_Stop("Postfach geschlossen.") end
+end)
+
 -- ===== UI =====
 local function RAM_CreateButton()
   if RAM_TestButton then return end
@@ -784,7 +941,64 @@ local function RAM_CreateButton()
   RAM_Print("button created")
 end
 
-local mailbox = CreateFrame("Frame")
-mailbox:RegisterEvent("MAIL_SHOW")
-mailbox:SetScript("OnEvent", RAM_CreateButton)
+-- Empfangs-Button "Open AZ" (Posteingang, neu -> alt)
+local function RAM_CreateInboxButtons()
+  if RAM_OpenAZButton then return end
+  if not InboxFrame then return end
 
+  local btn = CreateFrame("Button", "RAM_OpenAZButton", InboxFrame, "UIPanelButtonTemplate")
+  btn:SetText("Open AZ")
+  btn:SetWidth(90); btn:SetHeight(22)
+  btn:SetPoint("TOPRIGHT", InboxFrame, "TOPRIGHT", -30, -30)
+
+  btn:SetFrameStrata("HIGH")
+  if InboxFrame.GetFrameLevel then
+    btn:SetFrameLevel(InboxFrame:GetFrameLevel() + 5)
+  end
+
+  btn:SetScript("OnClick", RAM_OpenAZ_Start)
+  RAM_Print("Open AZ Button erstellt")
+end
+
+-- ===== UI Hooks: Buttons bauen, wenn Tabs gezeigt werden =====
+if RAM_MailUIHook then
+  RAM_MailUIHook:UnregisterAllEvents()
+end
+RAM_MailUIHook = CreateFrame("Frame")
+RAM_MailUIHook:RegisterEvent("MAIL_SHOW")
+
+RAM_MailUIHook:SetScript("OnEvent", function()
+  -- Send-Tab: OnShow hooken (alten Handler beibehalten)
+  if SendMailFrame and not SendMailFrame.RAM_Hooked and SendMailFrame.SetScript then
+    local origShow = nil
+    if SendMailFrame.GetScript then
+      origShow = SendMailFrame:GetScript("OnShow")
+    end
+    SendMailFrame:SetScript("OnShow", function()
+      if origShow then origShow() end
+      RAM_CreateButton()
+    end)
+    SendMailFrame.RAM_Hooked = true
+  end
+
+  -- Inbox-Tab: OnShow hooken (alten Handler beibehalten)
+  if InboxFrame and not InboxFrame.RAM_Hooked and InboxFrame.SetScript then
+    local origShow2 = nil
+    if InboxFrame.GetScript then
+      origShow2 = InboxFrame:GetScript("OnShow")
+    end
+    InboxFrame:SetScript("OnShow", function()
+      if origShow2 then origShow2() end
+      RAM_CreateInboxButtons()
+    end)
+    InboxFrame.RAM_Hooked = true
+  end
+
+  -- Falls beim Öffnen bereits ein Tab sichtbar ist: sofort bauen
+  if SendMailFrame and SendMailFrame.IsShown and SendMailFrame:IsShown() then
+    RAM_CreateButton()
+  end
+  if InboxFrame and InboxFrame.IsShown and InboxFrame:IsShown() then
+    RAM_CreateInboxButtons()
+  end
+end)
